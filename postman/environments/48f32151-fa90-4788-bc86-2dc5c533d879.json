@@ -1,0 +1,1 @@
+{"id":"48f32151-fa90-4788-bc86-2dc5c533d879","name":"DEV-CRM","values":[{"key":"URL","value":"http://127.0.0.1:8000/api","enabled":true,"type":"default"},{"key":"randomNumber","value":"","enabled":true,"type":"any"},{"key":"TOKEN","value":"","enabled":true,"type":"any"}]}

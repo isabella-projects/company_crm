@@ -1,3 +1,3 @@
-# Endpoint testing with Postman
+# API Endpoint testing with Postman configuration
 
--   Adjust the values as needed to test any endpoint
+-   By selecting import inside Postman, you can easily import the collections and test all the API Endpoints
