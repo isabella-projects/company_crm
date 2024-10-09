@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Company;
 
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCompanyRequest extends FormRequest
@@ -11,7 +12,9 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $company = $this->route('company');
+
+        return $this->user()->can('update', $company);
     }
 
     /**

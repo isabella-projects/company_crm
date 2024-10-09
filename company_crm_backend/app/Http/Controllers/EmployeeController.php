@@ -7,6 +7,7 @@ use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Services\EmployeeService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class EmployeeController extends Controller
 {
