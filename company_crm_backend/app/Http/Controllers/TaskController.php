@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\Employee;
 use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -19,7 +21,11 @@ class TaskController extends Controller
 
     public function index()
     {
-        return response()->json(Task::with('employee')->get(), Response::HTTP_OK);
+        $tasks = Task::whereHas('employee.company', function ($query) {
+            $query->where('user_id', Auth::id());
+        })->paginate(5);
+
+        return response()->json($tasks, Response::HTTP_OK);
     }
 
     public function store(StoreTaskRequest $request)
@@ -32,6 +38,10 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
+        if ($task->employee->company->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to view this task.');
+        }
+
         return response()->json($task, Response::HTTP_OK);
     }
 
@@ -45,6 +55,10 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        if ($task->employee->company->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to delete this task.');
+        }
+
         $this->taskService->deleteTask($task);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

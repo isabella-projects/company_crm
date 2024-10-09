@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\Models\Employee;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateEmployeeRequest extends FormRequest
 {
@@ -11,7 +13,9 @@ class UpdateEmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $employee = $this->route('employee');
+
+        return $employee->company->user_id === Auth::id();
     }
 
     /**

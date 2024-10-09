@@ -4,6 +4,7 @@ namespace App\Http\Requests\Company;
 
 use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreCompanyRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class StoreCompanyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Company::class);
+        return !Auth::user()->company;
     }
 
     /**

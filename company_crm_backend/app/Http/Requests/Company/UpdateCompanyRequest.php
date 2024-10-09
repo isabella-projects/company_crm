@@ -4,6 +4,7 @@ namespace App\Http\Requests\Company;
 
 use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateCompanyRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class UpdateCompanyRequest extends FormRequest
     {
         $company = $this->route('company');
 
-        return $this->user()->can('update', $company);
+        return $company->user_id === Auth::id();
     }
 
     /**

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Task;
 
+use App\Models\Employee;
+use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -11,7 +14,9 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $employee = Employee::findOrFail($this->input('employee_id'));
+
+        return $employee->company->user_id === Auth::id();
     }
 
     /**

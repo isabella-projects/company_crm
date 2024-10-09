@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreEmployeeRequest extends FormRequest
 {
@@ -11,7 +14,9 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $company = Company::findOrFail($this->input('company_id'));
+
+        return $company->user_id === Auth::id();
     }
 
     /**

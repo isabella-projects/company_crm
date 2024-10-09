@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Services\EmployeeService;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -20,6 +21,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
+        //
         return response()->json(Employee::with('company')->get(), Response::HTTP_OK);
     }
 
@@ -33,6 +35,7 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
+        //
         return response()->json($employee, Response::HTTP_OK);
     }
 
@@ -46,6 +49,12 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
+        $company = $employee->company;
+
+        if ($company->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to delete this employee.');
+        }
+
         $this->employeeService->deleteEmployee($employee);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

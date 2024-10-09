@@ -8,7 +8,7 @@ use App\Models\Company;
 use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -21,7 +21,9 @@ class CompanyController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json(Company::all(), Response::HTTP_OK);
+        $companies = Company::where('user_id', Auth::id())->paginate(5);
+
+        return response()->json($companies, Response::HTTP_OK);
     }
 
     public function store(StoreCompanyRequest $request): JsonResponse
@@ -38,6 +40,10 @@ class CompanyController extends Controller
 
     public function show(Company $company): JsonResponse
     {
+        if ($company->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to view this company.');
+        }
+
         $company->logo_url = asset('storage/' . $company->logo);
 
         return response()->json($company, Response::HTTP_OK);
@@ -53,7 +59,9 @@ class CompanyController extends Controller
 
     public function destroy(Company $company): JsonResponse
     {
-        Gate::authorize('delete', $company);
+        if ($company->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to delete this company.');
+        }
 
         $this->companyService->deleteCompany($company);
 
