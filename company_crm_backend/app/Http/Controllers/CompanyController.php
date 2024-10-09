@@ -26,6 +26,10 @@ class CompanyController extends Controller
 
     public function store(StoreCompanyRequest $request): JsonResponse
     {
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
         $validatedData = $request->validated();
         $company = $this->companyService->createCompany($validatedData);
 
@@ -34,6 +38,8 @@ class CompanyController extends Controller
 
     public function show(Company $company): JsonResponse
     {
+        $company->logo_url = asset('storage/' . $company->logo);
+
         return response()->json($company, Response::HTTP_OK);
     }
 
