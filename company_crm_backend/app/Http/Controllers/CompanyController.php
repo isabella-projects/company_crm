@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CompanyController extends Controller
 {
@@ -46,6 +47,8 @@ class CompanyController extends Controller
 
     public function destroy(Company $company): JsonResponse
     {
+        Gate::authorize('delete', $company);
+
         $this->companyService->deleteCompany($company);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
