@@ -6,7 +6,7 @@
 
 # 📝 Description
 
-## Company Management is Mini-CRM demo project part of my interview process
+## Company Management is Mini-CRM demo project part of technical challenge for an interview process as Laravel Developer.
 
 # 🛠 Tech Stack
 
