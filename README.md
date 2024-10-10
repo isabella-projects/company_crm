@@ -8,6 +8,10 @@
 
 ## Company Management is Mini-CRM demo project part of technical challenge for an interview process as Laravel Developer.
 
+## 👀 Sneak-peak
+
+![image](https://github.com/user-attachments/assets/5e89e752-c6ba-4af0-bfa3-eef92cbe377d)
+
 # 🛠 Tech Stack
 
 <div>
