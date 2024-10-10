@@ -28,11 +28,11 @@ class CompanyController extends Controller
 
     public function store(StoreCompanyRequest $request): JsonResponse
     {
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('logos', 'public');
-        }
-
         $validatedData = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
+        }
         $company = $this->companyService->createCompany($validatedData);
 
         return response()->json($company, Response::HTTP_CREATED);
@@ -44,7 +44,10 @@ class CompanyController extends Controller
             abort(403, 'You are not authorized to view this company.');
         }
 
-        $company->logo_url = asset('storage/' . $company->logo);
+        if ($company->logo) {
+            // I can use the full url on the frontend.. didn't have enough time to implement it on the front
+            $company->logo_url = asset('storage/' . $company->logo);
+        }
 
         return response()->json($company, Response::HTTP_OK);
     }
